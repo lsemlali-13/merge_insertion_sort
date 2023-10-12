@@ -3,22 +3,24 @@
 #include <algorithm>
 #include <vector>
 
+struct Number {
+	int		num;
+	int		index;
+	bool	operator< (Number const & n) {
+		return num < n.num;
+	}
+	Number	&operator= (Number const & n) {
+		num = n.num;
+		index = n.index;
+		return *this;
+	}
+};
+
+typedef std::vector<std::pair<Number, Number> >	Pairs;
+
 namespace MergeInsertion
 {
-	struct Number {
-		int		num;
-		int		index;
-		bool	operator< (Number const & n) {
-			return num < n.num;
-		}
-		Number	&operator= (Number const & n) {
-			num = n.num;
-			index = n.index;
-			return *this;
-		}
-	};
-//	functions
-	typedef std::vector<std::pair<Number, Number> >	Pairs;
+	//	functions
 	void				sort( std::vector<int> &arr );
 	void				makeNumbers( std::vector<int> & nums );
 	int					getJacob( int index );
@@ -36,7 +38,7 @@ namespace MergeInsertion
 	bool				hasStraggler;
 };
 
-int FordJohnson::getJacob( int index ) {
+int MergeInsertion::getJacob( int index ) {
 	if (index == 0)
 		return 0;
 	if (index == 1)
@@ -44,7 +46,7 @@ int FordJohnson::getJacob( int index ) {
 	return getJacob(index - 1) + 2 * getJacob(index - 2);
 }
 
-void FordJohnson::createJacobSequence() {
+void MergeInsertion::createJacobSequence() {
 	unsigned int	jacob, jacobIndex = 3, i = 1;
 	unsigned int	lastPos = 1, save;
 
@@ -67,7 +69,7 @@ void FordJohnson::createJacobSequence() {
 	}
 }
 
-Pairs	FordJohnson::makePairs( std::vector<Number> & nums, bool saveIdxs ) {
+Pairs	MergeInsertion::makePairs( std::vector<Number> & nums, bool saveIdxs ) {
 	Pairs	pairs;
 	int		idx = 0;
 
@@ -89,7 +91,7 @@ Pairs	FordJohnson::makePairs( std::vector<Number> & nums, bool saveIdxs ) {
 	return pairs;
 }
 
-std::vector<Number>	FordJohnson::mergeInsert( std::vector<Number> & lNums ) {
+std::vector<Number>	MergeInsertion::mergeInsert( std::vector<Number> & lNums ) {
 	if (lNums.size() < 2)
 		return lNums;
 	std::vector<Number>	main;
@@ -116,7 +118,7 @@ std::vector<Number>	FordJohnson::mergeInsert( std::vector<Number> & lNums ) {
 	return main;
 }
 
-void FordJohnson::insertion() {
+void MergeInsertion::insertion() {
 	int							pos, count = 1;
 	std::vector<int>::iterator	binaryPos;
 
@@ -133,14 +135,14 @@ void FordJohnson::insertion() {
 	}
 }
 
-void FordJohnson::createChains( std::vector<Number> &lNums ) {
+void MergeInsertion::createChains( std::vector<Number> &lNums ) {
 	for (std::vector<Number>::iterator it = lNums.begin(); it != lNums.end(); it++) {
 		main.push_back((*it).num);
 		pend.push_back(pairs[(*it).index].second.num);
 	}
 }
 
-void FordJohnson::makeNumbers( std::vector<int> & nums ) {
+void MergeInsertion::makeNumbers( std::vector<int> & nums ) {
 	for (std::vector<int>::iterator it = nums.begin(); it != nums.end(); it++) {
 		Number	num;
 		num.num = *it;
@@ -149,7 +151,7 @@ void FordJohnson::makeNumbers( std::vector<int> & nums ) {
 }
 
 
-void FordJohnson::sort( std::vector<int> &arr ) {
+void MergeInsertion::sort( std::vector<int> &arr ) {
 		std::vector<Number> largerNums;
 
 		makeNumbers(arr);
