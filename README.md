@@ -4,7 +4,7 @@ This repository contains the implementation of the Ford-Johnson algorithm, also 
 
 # instalation & usage
 
-`git clone https://github.com/lsemlali-13/merge_insertion_sort`
+`$ git clone https://github.com/lsemlali-13/merge_insertion_sort`
 
 <img src="https://github.com/lsemlali-13/merge_insertion_sort/assets/74025428/883e3f20-bc5c-4e2d-a684-613bc06b56e0">
 
