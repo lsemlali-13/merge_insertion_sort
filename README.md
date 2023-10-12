@@ -26,17 +26,28 @@ this is the step by step of how the ford johnson algorithm using works for `n` e
 
 lets consider this example [3, 8, 2, 7, 5, 1, 9, 0, 1].
 
-**grouping numbers to pairs**
+## grouping numbers to pairs
 
 in this example we have 9 numbers wich is odd means we save the last element wich is 1 to be inseted last.
 <img src="https://www.imghost.net/ib/K5oLAA9vpZx3jBQ_1697146708.png">
 
-**sort each pair**
+## sort each pair
 
 <img src="https://i.postimg.cc/FR139TTf/Screenshot-from-2023-10-12-22-39-51.png">
 
-**sort pairs by larger numbers by recursion using merge insertion**
+## sort pairs by larger numbers by recursion using merge insertion
 
 in this step you should keep track of the order of the larger numbers so you can rearrange the smaller ones after.
 
 <img src="https://www.imghost.net/ib/AkE2qDQAML07hFC_1697147453.png" alt="Screenshot from 2023-10-12 22-45-37.png">
+
+## create main chain and pend chain
+
+the main chain where you put the larger numbers means the first number of each pair, and the pend is where you put the smallest numbers.
+
+<img src="https://www.imghost.net/ib/5yfH5Zoh3FXO57z_1697147875.png" alt="Screenshot from 2023-10-12 22-57-45.png">
+
+## insertion
+first insert the first number of pend elements to begining of main chain.
+
+
