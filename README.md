@@ -26,6 +26,17 @@ this is the step by step of how the ford johnson algorithm using works for `n` e
 
 lets consider this example [3, 8, 2, 7, 5, 1, 9, 0, 1].
 
-1st step would give us: 
+**grouping numbers to pairs**
 
-<img src="https://www.imghost.net/en/8SHGLh76tQILeRo">
+in this example we have 9 numbers wich is odd means we save the last element wich is 1 to be inseted last.
+<img src="https://www.imghost.net/ib/K5oLAA9vpZx3jBQ_1697146708.png">
+
+**sort each pair**
+
+<img src="https://i.postimg.cc/FR139TTf/Screenshot-from-2023-10-12-22-39-51.png">
+
+**sort pairs by larger numbers by recursion using merge insertion**
+
+in this step you should keep track of the order of the larger numbers so you can rearrange the smaller ones after.
+
+<img src="https://www.imghost.net/ib/AkE2qDQAML07hFC_1697147453.png" alt="Screenshot from 2023-10-12 22-45-37.png">
