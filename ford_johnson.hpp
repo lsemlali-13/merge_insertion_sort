@@ -21,8 +21,10 @@ typedef std::vector<std::pair<Number, Number> >	Pairs;
 namespace MergeInsertion
 {
 	//	functions
-	void				sort( std::vector<int> &arr );
-	void				makeNumbers( std::vector<int> & nums );
+	template <typename randomIt>
+	void				sort( randomIt first, randomIt last );
+	template <typename randomIt>
+	void				makeNumbers( randomIt first, randomIt last );
 	int					getJacob( int index );
 	void				printResult();
 	void				createJacobSequence();
@@ -142,19 +144,20 @@ void MergeInsertion::createChains( std::vector<Number> &lNums ) {
 	}
 }
 
-void MergeInsertion::makeNumbers( std::vector<int> & nums ) {
-	for (std::vector<int>::iterator it = nums.begin(); it != nums.end(); it++) {
+template <typename randomIt>
+void MergeInsertion::makeNumbers(randomIt first, randomIt last) {
+	for (randomIt it = first; it != last; it++) {
 		Number	num;
 		num.num = *it;
 		Nums.push_back(num);
 	}
 }
 
-
-void MergeInsertion::sort( std::vector<int> &arr ) {
+template <typename randomIt>
+void MergeInsertion::sort(randomIt first, randomIt last) {
 		std::vector<Number> largerNums;
 
-		makeNumbers(arr);
+		makeNumbers(first, last);
 		hasStraggler = Nums.size() % 2 == 0 ? false : true;
 		if (hasStraggler)
 			straggler = Nums.back();
@@ -165,6 +168,5 @@ void MergeInsertion::sort( std::vector<int> &arr ) {
 		createChains(largerNums);
 		createJacobSequence();
 		insertion();
-		arr.clear();
-		arr.insert(arr.begin(), main.begin(), main.end());
+		std::copy(main.begin(), main.end(), first);
 }
