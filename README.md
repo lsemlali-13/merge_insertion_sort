@@ -28,4 +28,4 @@ lets consider this example [3, 8, 2, 7, 5, 1, 9, 0, 1].
 
 1st step would give us: 
 
-<img src="https://www.imghost.net/WEc7KwdFKKeF5P2">
+<img src="https://www.imghost.net/ib/xAsI6Tx5oc78DKr_1697146566.png">
