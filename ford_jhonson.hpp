@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <vector>
 
-namespace FordJohnson
+namespace MergeInsertion
 {
 	struct Number {
 		int		num;
