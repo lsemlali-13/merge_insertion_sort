@@ -27,3 +27,5 @@ this is the step by step of how the ford johnson algorithm using works for `n` e
 lets consider this example [3, 8, 2, 7, 5, 1, 9, 0, 1].
 
 1st step would give us: 
+
+<img src="https://www.imghost.net/WEc7KwdFKKeF5P2">
