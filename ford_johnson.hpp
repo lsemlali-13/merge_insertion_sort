@@ -4,16 +4,15 @@
 #include <vector>
 
 struct Number {
-	int		num;
-	int		index;
-	bool	operator< (Number const & n) {
-		return num < n.num;
-	}
-	Number	&operator= (Number const & n) {
-		num = n.num;
-		index = n.index;
-		return *this;
-	}
+    int		num;
+    std::vector<int>		indexs;
+    bool	operator< (Number const & n) const {
+        return num < n.num;
+    }
+    void	operator= (Number const & n) {
+        num = n.num;
+        indexs = n.indexs;
+    }
 };
 
 typedef std::vector<std::pair<Number, Number> >	Pairs;
@@ -27,17 +26,13 @@ namespace MergeInsertion
 	void				makeNumbers( randomIt first, randomIt last );
 	int					getJacob( int index );
 	void				printResult();
-	void				createJacobSequence();
-	void				createChains( std::vector<Number> & lNums );
+	void				createJacobSequence( std::vector<Number> pend );
 	Pairs				makePairs( std::vector<Number> & nums, bool saveIdxs );
 	std::vector<Number>	mergeInsert( std::vector<Number> & lNums );
-	void				insertion();
+	void				insertion( std::vector<Number> & main, std::vector<Number> & pend, Number & strag );
 //variables
-	std::vector<int>	main, pend, sequence;
+	std::vector<int>	sequence;
 	std::vector<Number>	Nums;
-	Pairs				pairs;
-	Number				straggler;
-	bool				hasStraggler;
 };
 
 int MergeInsertion::getJacob( int index ) {
@@ -48,13 +43,13 @@ int MergeInsertion::getJacob( int index ) {
 	return getJacob(index - 1) + 2 * getJacob(index - 2);
 }
 
-void MergeInsertion::createJacobSequence() {
+void MergeInsertion::createJacobSequence( std::vector<Number> pend ) {
 	unsigned int	jacob, jacobIndex = 3, i = 1;
 	unsigned int	lastPos = 1, save;
 
 	while (i < pend.size()) {
 		jacob = getJacob(jacobIndex++);
-		if (jacob <= pairs.size()) {
+		if (jacob <= pend.size()) {
 			save = jacob;
 			i += jacob - lastPos;
 			sequence.push_back(jacob);
@@ -63,7 +58,7 @@ void MergeInsertion::createJacobSequence() {
 			lastPos = save;
 		}
 		else {
-			while (--jacob > pairs.size());
+			while (--jacob > pend.size());
 			while (jacob > lastPos)
 				sequence.push_back(jacob--);
 			break;
@@ -81,10 +76,8 @@ Pairs	MergeInsertion::makePairs( std::vector<Number> & nums, bool saveIdxs ) {
 		Number	n1, n2;
 		n1 = *it;
 		n2 = *(it + 1);
-		if (saveIdxs) {
-			n1.index = idx;
-			n2.index = idx++;
-		}
+        n1.indexs.push_back(idx);
+        n2.indexs.push_back(idx++);
 		if (n1 < n2)
 			pairs.push_back(std::make_pair(n2, n1));
 		else
@@ -99,30 +92,31 @@ std::vector<Number>	MergeInsertion::mergeInsert( std::vector<Number> & lNums ) {
 	std::vector<Number>	main;
 	std::vector<Number>	pend;
 	Pairs				pairs;
-	Number				strag;
+    Number              strag;
 
 	pairs = makePairs(lNums, false);
-	if (lNums.size() % 2 != 0)
-		strag = lNums.back();
-	for (Pairs::iterator it = pairs.begin(); it != pairs.end(); it++) {
-		main.push_back((*it).first);
-		pend.push_back((*it).second);
-	}
-	main = mergeInsert(main);
-	for (std::vector<Number>::iterator it = pend.begin(); it != pend.end(); it++) {
-		std::vector<Number>::iterator pos = std::lower_bound(main.begin(), main.end(), *it);
-		main.insert(pos, *it);
-	}
 	if (lNums.size() % 2 != 0) {
-		std::vector<Number>::iterator pos = std::lower_bound(main.begin(), main.end(), strag);
-		main.insert(pos, strag);
-	}
+        strag = lNums.back();
+        strag.indexs.push_back(1999);
+    }
+	for (Pairs::iterator it = pairs.begin(); it != pairs.end(); it++)
+		main.push_back((*it).first);
+	main = mergeInsert(main);
+    std::cout << "---->\n";
+    for (size_t i = 0; i < pairs.size(); i++) {
+        pend.push_back(pairs[main[i].indexs.back()].second);
+        std::cout << main[i].num << ", " << pend[i].num << std::endl;
+        main[i].indexs.pop_back();
+        pend[i].indexs.pop_back();
+    }
+    createJacobSequence(pend);
+    insertion(main, pend, strag);
 	return main;
 }
 
-void MergeInsertion::insertion() {
-	int							pos, count = 1;
-	std::vector<int>::iterator	binaryPos;
+void MergeInsertion::insertion( std::vector<Number> & main, std::vector<Number> & pend, Number & strag ) {
+	int							    pos, count = 1;
+	std::vector<Number>::iterator	binaryPos;
 
 	main.insert(main.begin(), pend[0]);
 	for (std::vector<int>::iterator it = sequence.begin(); it != sequence.end(); it++) {
@@ -131,17 +125,12 @@ void MergeInsertion::insertion() {
 		main.insert(binaryPos, pend[pos]);
 		count++;
 	}
-	if (hasStraggler) {
-		binaryPos = std::lower_bound(main.begin(), main.end(), straggler.num);
-		main.insert(binaryPos, straggler.num);
+	if (strag.indexs.size()) {
+		binaryPos = std::lower_bound(main.begin(), main.end(), strag);
+		main.insert(binaryPos, strag);
+        strag.indexs.pop_back();
 	}
-}
-
-void MergeInsertion::createChains( std::vector<Number> &lNums ) {
-	for (std::vector<Number>::iterator it = lNums.begin(); it != lNums.end(); it++) {
-		main.push_back((*it).num);
-		pend.push_back(pairs[(*it).index].second.num);
-	}
+    sequence.clear();
 }
 
 template <typename randomIt>
@@ -155,18 +144,11 @@ void MergeInsertion::makeNumbers(randomIt first, randomIt last) {
 
 template <typename randomIt>
 void MergeInsertion::sort(randomIt first, randomIt last) {
-		std::vector<Number> largerNums;
+		std::vector<Number> main;
 
 		makeNumbers(first, last);
-		hasStraggler = Nums.size() % 2 == 0 ? false : true;
-		if (hasStraggler)
-			straggler = Nums.back();
-		pairs = makePairs(Nums, true);
-		for (Pairs::iterator it = pairs.begin(); it != pairs.end(); it++)
-			largerNums.push_back((*it).first);
-		largerNums = mergeInsert(largerNums);
-		createChains(largerNums);
-		createJacobSequence();
-		insertion();
-		std::copy(main.begin(), main.end(), first);
+		main = mergeInsert(Nums);
+        for (size_t i = 0; i < main.size(); i++)
+            std::cout << main[i].num << std::endl;
+//		std::copy(main.begin(), main.end(), first);
 }
