@@ -22,13 +22,14 @@ this is the step by step of how the ford johnson algorithm using works for `n` e
 
 5. **Binary Search**: Use binary search in subsequences of `S` to determine the position at which each element should be inserted. The algorithm is designed to take advantage of the fact that binary searches used to insert elements into are most efficient when the length of the subsequence that is searched is one less than a power of two.
 
-# Detailed Explanation using Example
+# Example
 
 lets consider this example [3, 8, 2, 7, 5, 1, 9, 0, 1].
 
 ### grouping numbers to pairs
 
 in this example we have 9 numbers wich is odd means we save the last element wich is 1 to be inseted last.
+
 <img src="https://www.imghost.net/ib/K5oLAA9vpZx3jBQ_1697146708.png">
 
 ### sort each pair
@@ -50,6 +51,7 @@ the main chain where you put the larger numbers means the first number of each p
 ## insertion
 
 first insert the first number of pend elements to begining of main chain.
+
 <img src="https://www.imghost.net/ib/TeGHq42rOq1LNHz_1697148212.png">
 
 then we insert the rest of the pend elements by this order 3, 2, 5, 4, 11, 10, 9, 8... this order can be determened by a sequence called the jacob sthal 1, 3, 5, 11, the first element was already inserted, so we start by 3, in this example the sequence would be 3, 2, 4 and each element will be inserted using binary search into the main chain.
